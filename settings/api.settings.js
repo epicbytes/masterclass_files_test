@@ -25,8 +25,7 @@ module.exports = {
 
       callOptions: {
         timeout: 300000,
-        retries: 3,
-        fallbackResponse: "Static fallback response"
+        retries: 3
       },
 
       busboyConfig: {
