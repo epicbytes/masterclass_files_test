@@ -20,8 +20,10 @@
     "moleculer-repl": "^0.5.7"
   },
   "dependencies": {
+    "bull": "^3.12.1",
     "dotenv": "^8.2.0",
     "fluent-ffmpeg": "^2.1.2",
+    "glob": "^7.1.6",
     "ioredis": "^4.14.0",
     "moleculer": "^0.13.9",
     "moleculer-db": "^0.8.4",

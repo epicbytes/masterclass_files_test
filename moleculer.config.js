@@ -84,7 +84,7 @@ module.exports = {
   registry: {
     // Define balancing strategy.
     // Available values: "RoundRobin", "Random", "CpuUsage", "Latency"
-    strategy: "RoundRobin",
+    strategy: "CpuUsage",
     // Enable local action call preferring.
     preferLocal: true
   },

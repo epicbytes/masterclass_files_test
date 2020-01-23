@@ -1,20 +1,33 @@
 module.exports = {
   port: process.env.API_PORT || 3000,
-
+  etag: true,
+  cors: true,
   routes: [
     {
+      path: "/api/v1/queues",
+      bodyParsers: {
+        json: {
+          limit: "5mb",
+          strict: true
+        },
+        urlencoded: {
+          extended: true,
+          limit: "5mb"
+        }
+      },
+      aliases: {
+        "POST /make_hls/:id": "queues.make_hls"
+      },
+      mappingPolicy: "restrict"
+    },
+    {
       path: "/api/v1/files",
-
-      authorization: true,
-
       bodyParsers: {
         json: false,
         urlencoded: false
       },
-
       aliases: {
         "GET /stream/:id": "files.stream",
-        "GET /make/:id": "files.make",
         "GET /:id": "files.get",
         "POST /": "multipart:files.create",
         "PUT /": "stream:files.create",
