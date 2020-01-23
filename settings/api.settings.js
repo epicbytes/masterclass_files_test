@@ -14,6 +14,7 @@ module.exports = {
 
       aliases: {
         "GET /stream/:id": "files.stream",
+        "GET /make/:id": "files.make",
         "GET /:id": "files.get",
         "POST /": "multipart:files.create",
         "PUT /": "stream:files.create",

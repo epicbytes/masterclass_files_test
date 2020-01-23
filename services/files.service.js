@@ -2,6 +2,8 @@ const Service = require("moleculer").Service;
 const CoreMixins = require("../mixins");
 const settings = require("../settings/files.settings");
 const mongodb = require("mongodb");
+const ffmpeg = require("fluent-ffmpeg");
+const path = require("path");
 
 class FilesService extends Service {
   constructor(broker) {
@@ -12,8 +14,8 @@ class FilesService extends Service {
       mixins: [CoreMixins.DB("fs.files")],
       hooks: {
         before: {
-          get: ["getFileLength"],
-          stream: ["getFileLength"]
+          get: ["getFileInfo"],
+          stream: ["getFileInfo"]
         }
       },
       actions: {
@@ -27,28 +29,28 @@ class FilesService extends Service {
         stream: {
           cache: false,
           params: {
-            id: { type: "string" },
-            range: {
-              type: "object",
-              props: {
-                start: { type: "number", convert: true },
-                end: { type: "number", convert: true }
-              },
-              optional: true
-            }
+            id: { type: "string" }
           },
           handler: this.getFileStream
         },
         create: {
           handler: this.saveFile
+        },
+        make: {
+          cache: false,
+          params: {
+            id: { type: "string" }
+          },
+          handler: this.makeHLSFile
         }
       }
     });
   }
 
-  async getFileLength(ctx) {
+  async getFileInfo(ctx) {
     const fileData = await this.adapter.findById(ctx.params.id);
     ctx.params.length = fileData.length;
+    ctx.params.filename = fileData.filename;
     ctx.params.contentType = fileData.contentType;
   }
 
@@ -63,33 +65,61 @@ class FilesService extends Service {
     return file;
   }
 
+  makeHLSFile(ctx) {
+    const { id, contentType } = ctx.params;
+    const bucket = new mongodb.GridFSBucket(this.adapter.db);
+    const file = bucket.openDownloadStream(mongodb.ObjectID(id));
+    ctx.meta.$statusCode = 200;
+    ctx.meta.$responseHeaders = {
+      "Content-Type": contentType
+    };
+    return new Promise((resolve, reject) => {
+      ffmpeg({ timeout: 432000 })
+        .input(file)
+        .videoCodec("libx264")
+        .addOption("-hls_time", 10)
+        .addOption("-hls_list_size", 0)
+        .on("end", function() {
+          resolve("file has been converted succesfully");
+        })
+        .on("error", function(err) {
+          reject("an error happened: " + err.message);
+        })
+        .save(path.join(__dirname, "..", "test", "your_target.m3u8"));
+    });
+  }
+
   getFileStream(ctx) {
-    const { id, length, contentType } = ctx.params;
+    const { length, contentType, filename } = ctx.params;
     const { range } = ctx.meta;
     const bucket = new mongodb.GridFSBucket(this.adapter.db);
     if (!range) {
       return this.getFile(ctx);
     }
     var start = parseInt(range.start, 10);
-    var end = range.end ? parseInt(range.end, 10) : length - 1;
+    var end = range.end > 0 ? parseInt(range.end, 10) : length - 1;
     var chunksize = end - start + 1;
-    console.log("RANGE: " + start + " - " + end + " = " + chunksize);
-    const file = bucket.openDownloadStream(mongodb.ObjectID(id), {
-      start,
-      end
-    });
+    console.log(
+      "RANGE: " + start + " - " + end + " = " + chunksize + "|" + length
+    );
     ctx.meta.$statusCode = 206;
     ctx.meta.$responseHeaders = {
       "Content-Range": "bytes " + start + "-" + end + "/" + length,
       "Accept-Ranges": "bytes",
+      "Content-Length": chunksize,
       "Content-Type": contentType
     };
+    const file = bucket.openDownloadStreamByName(filename, {
+      start,
+      end: end == 1 ? 2 : end
+    });
+
     return file;
   }
 
   saveFile(ctx) {
     try {
-      return new Promise(async (resolve, reject) => {
+      return new Promise((resolve, reject) => {
         const bucket = new mongodb.GridFSBucket(this.adapter.db);
         const uploadStream = bucket.openUploadStream(ctx.meta.filename, {
           metadata: {
