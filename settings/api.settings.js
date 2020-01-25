@@ -1,3 +1,6 @@
+"use strict";
+const passport = require("passport");
+
 module.exports = {
   port: process.env.API_PORT || 5000,
   etag: true,
@@ -5,6 +8,7 @@ module.exports = {
   routes: [
     {
       path: "/api/v1/clients",
+      use: [passport.initialize()],
       bodyParsers: {
         json: {
           limit: "5mb",
@@ -16,7 +20,7 @@ module.exports = {
         }
       },
       aliases: {
-        "GET /plugins": "clients.get_plugins"
+        "GET /plugins": [console.log, "clients.get_plugins"]
       },
       mappingPolicy: "restrict"
     },
