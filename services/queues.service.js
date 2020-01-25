@@ -6,42 +6,49 @@ class QueuesService extends Service {
     super(broker);
     this.parseServiceSchema({
       name: "queues",
-      actions: {
-        make_hls: {
-          cache: false,
-          params: {
-            id: { type: "string" }
-          },
-          handler: this.makeHls
-        }
-      },
-
       events: {
         "files.uploaded": {
           handler(payload) {
-            return this.actions.make_hls(payload);
+            return Promise.all([
+              this.videoQueue.add(payload),
+              this.mp3Queue.add(payload)
+            ]).then(([video, mp3]) => {
+              return { video, mp3 };
+            });
           }
         }
       },
       created() {
         this.videoQueue = new Queue("making hls files");
+        this.mp3Queue = new Queue("making mp3 file");
+
         this.videoQueue.process(function(job) {
           const { id } = job.data;
-          return broker.call("files.make", { id }, { timeout: 0 });
+          return broker.call("files.makeHls", { id }, { timeout: 0 });
         });
+
+        this.mp3Queue.process(function(job) {
+          const { id } = job.data;
+          return broker.call("files.makeMp3", { id }, { timeout: 0 });
+        });
+
+        this.mp3Queue.on("error", error => {
+          broker.logger.error(error);
+        });
+
+        this.mp3Queue.on("completed", job => {
+          broker.logger.info("completed", job.queue.name);
+        });
+
         this.videoQueue.on("error", error => {
-          console.log(error);
+          broker.logger.error(error);
         });
 
         this.videoQueue.on("completed", job => {
-          console.log("completed", job.id);
+          broker.logger.info("completed", job.queue.name);
         });
       }
     });
-  }
-
-  makeHls(ctx) {
-    return this.videoQueue.add(ctx.params);
   }
 }
 

@@ -4,6 +4,23 @@ module.exports = {
   cors: true,
   routes: [
     {
+      path: "/api/v1/clients",
+      bodyParsers: {
+        json: {
+          limit: "5mb",
+          strict: true
+        },
+        urlencoded: {
+          extended: true,
+          limit: "5mb"
+        }
+      },
+      aliases: {
+        "GET /plugins": "clients.get_plugins"
+      },
+      mappingPolicy: "restrict"
+    },
+    {
       path: "/api/v1/queues",
       bodyParsers: {
         json: {
