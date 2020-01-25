@@ -17,8 +17,8 @@ class ClientsService extends Service {
     });
   }
 
-  async GetPlugins() {
-    return await this.broker
+  GetPlugins() {
+    return this.broker
       .call("$node.services", {
         skipInternal: true,
         withActions: true,

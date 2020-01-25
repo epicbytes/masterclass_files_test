@@ -2,9 +2,18 @@
 
 const ApiGateway = require("moleculer-web");
 const settings = require("../settings/api.settings");
+const Service = require("moleculer").Service;
+const CoreMixins = require("../mixins");
 
-module.exports = {
-  name: "api",
-  mixins: [ApiGateway],
-  settings
-};
+class ApiService extends Service {
+  constructor(broker) {
+    super(broker);
+    this.parseServiceSchema({
+      name: "api",
+      mixins: [ApiGateway, CoreMixins.Socket],
+      settings
+    });
+  }
+}
+
+module.exports = ApiService;

@@ -1,5 +1,5 @@
 module.exports = {
-  port: process.env.API_PORT || 3000,
+  port: process.env.API_PORT || 5000,
   etag: true,
   cors: true,
   routes: [
