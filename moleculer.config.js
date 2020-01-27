@@ -17,14 +17,14 @@
  */
 module.exports = {
   // Namespace of nodes to segment your nodes on the same network.
-  namespace: "",
+  namespace: "home",
   // Unique node identifier. Must be unique in a namespace.
   nodeID: null,
 
   // Enable/disable logging or use custom logger. More info: https://moleculer.services/docs/0.13/logging.html
   logger: true,
   // Log level for built-in console logger. Available values: trace, debug, info, warn, error, fatal
-  logLevel: "info",
+  logLevel: process.env.LOG_LEVEL || "error",
   // Log formatter for built-in console logger. Available values: default, simple, short. It can be also a `Function`.
   logFormatter: "default",
   // Custom object & array printer for built-in console logger.
@@ -117,12 +117,7 @@ module.exports = {
 
   // Enable parameters validation. More info: https://moleculer.services/docs/0.13/validating.html
   validation: true,
-  // Custom Validator class for validation.
-  validator: null,
-
-  // Enable metrics function. More info: https://moleculer.services/docs/0.13/metrics.html
   metrics: false,
-
   tracing: {
     enabled: true,
     exporter: {
@@ -148,29 +143,5 @@ module.exports = {
       }
     }
   },
-  // Rate of metrics calls. 1 means to measure every request, 0 means to measure nothing.
-  metricsRate: 1,
-
-  // Register internal services ("$node"). More info: https://moleculer.services/docs/0.13/services.html#Internal-services
-  internalServices: true,
-  // Register internal middlewares. More info: https://moleculer.services/docs/0.13/middlewares.html#Internal-middlewares
-  internalMiddlewares: true,
-
-  // Watch the loaded services and hot reload if they changed. You can also enable it in Moleculer Runner with `--hot` argument
-  hotReload: false,
-
-  // Register custom middlewares
-  middlewares: [],
-
-  // Called after broker created.
-  created(broker) {},
-
-  // Called after broker starte.
-  started(broker) {},
-
-  // Called after broker stopped.
-  stopped(broker) {},
-
-  // Register custom REPL commands.
-  replCommands: null
+  middlewares: []
 };

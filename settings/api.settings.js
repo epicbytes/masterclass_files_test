@@ -75,7 +75,7 @@ module.exports = {
       path: "/api/v1/files",
       bodyParsers: {
         json: false,
-        urlencoded: false
+        urlencoded: { extended: true }
       },
       aliases: {
         "GET /stream/:id": "files.stream",

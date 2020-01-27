@@ -1,10 +1,12 @@
+"use strict";
+
+const { createModel } = require("mongoose-gridfs");
 const Service = require("moleculer").Service;
-const CoreMixins = require("../mixins");
-const settings = require("../settings/files.settings");
 const mongoose = require("mongoose");
 const path = require("path");
 const fs = require("fs");
-const { createModel } = require("mongoose-gridfs");
+const CoreMixins = require("../mixins");
+const settings = require("../settings/files.settings");
 
 class FilesService extends Service {
   constructor(broker) {
@@ -50,20 +52,7 @@ class FilesService extends Service {
     });
   }
 
-  async getFileInfo(ctx) {
-    const { id } = ctx.params;
-    const Attachment = createModel();
-    let fileData;
-    if (mongoose.Types.ObjectId.isValid(id)) {
-      fileData = await Attachment.findOne({ _id: id });
-    } else {
-      fileData = await Attachment.findOne({ filename: id });
-    }
-    ctx.params.length = fileData.length;
-    ctx.params.filename = fileData.filename;
-    ctx.params.contentType = fileData.contentType;
-  }
-
+  //Action
   getFile(ctx) {
     const { id, contentType } = ctx.params;
     const Attachment = createModel();
@@ -77,6 +66,7 @@ class FilesService extends Service {
     }
   }
 
+  //Action
   getFileStream(ctx) {
     const { length, contentType, filename } = ctx.params;
     const { range } = ctx.meta;
@@ -103,6 +93,7 @@ class FilesService extends Service {
     );
   }
 
+  //Action
   saveToGridFs(ctx) {
     const types = {
       ".ts": "video/mp2t",
@@ -154,6 +145,7 @@ class FilesService extends Service {
         ctx.params,
         (error, file) => {
           !!error && reject(new Error(error));
+          console.log(file);
           resolve(file);
         }
       );
@@ -161,15 +153,41 @@ class FilesService extends Service {
   }
 
   //Hook
+  async getFileInfo(ctx) {
+    const { id } = ctx.params;
+    const Attachment = createModel();
+    let fileData;
+    if (mongoose.Types.ObjectId.isValid(id)) {
+      fileData = await Attachment.findOne({ _id: id });
+    } else {
+      fileData = await Attachment.findOne({ filename: id });
+    }
+    ctx.params.length = fileData.length;
+    ctx.params.filename = fileData.filename;
+    ctx.params.contentType = fileData.contentType;
+  }
+
+  //Hook
   afterSaveFile(ctx, res) {
-    console.log(res);
-    const { filename } = res;
-    const id = res._id.toString();
+    const { filename, _id: id, contentType } = res;
+    const settings = this.parseMultipartSettings(ctx.meta.$multipart);
     ctx.emit("files.uploaded", {
       filename,
-      id
+      id,
+      contentType,
+      settings
     });
     return { id };
+  }
+
+  //Method
+  parseMultipartSettings(multipart) {
+    try {
+      return JSON.parse(multipart.settings);
+    } catch (error) {
+      this.broker.logger.error(error);
+      return {};
+    }
   }
 }
 

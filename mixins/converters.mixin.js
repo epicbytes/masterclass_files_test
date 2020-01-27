@@ -28,7 +28,7 @@ module.exports = {
     },
     makeHls: {
       handler(ctx) {
-        const { id } = ctx.params;
+        const { id, outputOptions } = ctx.params;
         const savePath = path.join(__dirname, "..", "test", `${id}.m3u8`);
         const searchPath = path.join(
           __dirname,
@@ -36,14 +36,12 @@ module.exports = {
           "test",
           `${id}*+(.ts|.m3u8)`
         );
+
         return new Promise((resolve, reject) => {
           const Attachment = createModel();
           ffmpeg({ timeout: 432000 })
             .input(Attachment.read({ _id: mongoose.Types.ObjectId(id) }))
-            .videoCodec("libx264")
-            .noAudio()
-            .addOption("-hls_time", 10)
-            .addOption("-hls_list_size", 0)
+            .outputOptions(outputOptions)
             .on("end", function() {
               glob(searchPath, {}, function(err, files) {
                 if (err === null) {
@@ -57,6 +55,7 @@ module.exports = {
               });
             })
             .on("error", function(err) {
+              console.log(err);
               reject("an error happened: " + err.message);
             })
             .save(savePath);
