@@ -2,6 +2,7 @@
 
 const Service = require("moleculer").Service;
 const CoreMixins = require("../mixins");
+const util = require("util");
 
 class ClientsService extends Service {
   constructor(broker) {
@@ -18,8 +19,17 @@ class ClientsService extends Service {
   }
 
   GetPlugins() {
-    return this.broker
-      .call("$node.services", {
+    const [node] = this.broker.registry.getNodeList({
+      onlyAvailable: false,
+      withServices: true
+    });
+
+    console.log(this.broker.generateUid());
+
+    return { ...node, services: node.services.length };
+
+    return this.broker.registry
+      .getServiceList({
         skipInternal: true,
         withActions: true,
         withEvents: true

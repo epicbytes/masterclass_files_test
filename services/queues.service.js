@@ -22,7 +22,7 @@ class QueuesService extends Service {
         this.videoQueue = new Queue("making hls files");
         this.mp3Queue = new Queue("making mp3 file");
 
-        this.videoQueue.process(function(job) {
+        this.videoQueue.process(async job => {
           const { id } = job.data;
           return broker.call("files.makeHls", { id }, { timeout: 0 });
         });

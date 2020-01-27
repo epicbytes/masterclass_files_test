@@ -8,6 +8,24 @@ const { createModel } = require("mongoose-gridfs");
 
 module.exports = {
   actions: {
+    info: {
+      cache: ["id"],
+      params: {
+        id: { type: "string" }
+      },
+      async handler(ctx) {
+        const file = await this.getFile(ctx);
+
+        return new Promise((resolve, reject) => {
+          ffmpeg.ffprobe(file, (err, information) => {
+            if (err) {
+              reject(err);
+            }
+            resolve(information);
+          });
+        });
+      }
+    },
     makeHls: {
       handler(ctx) {
         const { id } = ctx.params;

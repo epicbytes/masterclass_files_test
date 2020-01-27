@@ -320,7 +320,7 @@ bluebird@3.5.1:
   resolved "https://registry.npmjs.org/bluebird/-/bluebird-3.5.1.tgz#d9551f9de98f1fcda1e683d17ee91a0602ee2eb9"
   integrity sha512-MKiLiV+I1AA596t9w1sQJ8jkiSr5+ZKi0WKrYGUn6d1Fx+Ij4tIj+m2WMQSGczs5jZVxV339chE8iwk6F64wjA==
 
-bluebird@^3.5.5:
+bluebird@^3.3.3, bluebird@^3.5.5:
   version "3.7.2"
   resolved "https://registry.npmjs.org/bluebird/-/bluebird-3.7.2.tgz#9f229c15be272454ffa973ace0dbee79a1b0c36f"
   integrity sha512-XpNj6GDQzdfW+r2Wnn7xiSAd7TM3jzkxGXBGTtWKuSXv1xUV+azxAm8jdWZN06QTQk+2N2XB9jRDkvbmQmcRtg==
@@ -1029,10 +1029,10 @@ event-emitter@~0.3.4:
     d "1"
     es5-ext "~0.10.14"
 
-eventemitter2@^5.0.1:
-  version "5.0.1"
-  resolved "https://registry.npmjs.org/eventemitter2/-/eventemitter2-5.0.1.tgz#6197a095d5fb6b57e8942f6fd7eaad63a09c9452"
-  integrity sha1-YZegldX7a1folC9v1+qtY6CclFI=
+eventemitter2@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.npmjs.org/eventemitter2/-/eventemitter2-6.0.0.tgz#218eb512c3603c5341724b6af7b686a1aa5ab8f5"
+  integrity sha512-ZuNWHD7S7IoikyEmx35vPU8H1W0L+oi644+4mSTg7nwXvBQpIwQL7DPjYUF0VMB0jPkNMo3MqD07E7MYrkFmjQ==
 
 execa@^1.0.0:
   version "1.0.0"
@@ -1088,10 +1088,10 @@ fast-levenshtein@~2.0.6:
   resolved "https://registry.npmjs.org/fast-levenshtein/-/fast-levenshtein-2.0.6.tgz#3d8a5c66883a16a30ca8643e851f19baa7797917"
   integrity sha1-PYpcZog6FqMMqGQ+hR8Zuqd5eRc=
 
-fastest-validator@0.6.19:
-  version "0.6.19"
-  resolved "https://registry.npmjs.org/fastest-validator/-/fastest-validator-0.6.19.tgz#5522cf29a13090df71862c7df4b29d1f49165a91"
-  integrity sha512-U+hjn/Au+sgGfrwb26t26hywrItCdkpQ7VEJPY7Ey0FU2mnH/L4xhcs0R9Bd+y57aUKlasC3W4J6t8fOyXji6Q==
+fastest-validator@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/fastest-validator/-/fastest-validator-1.0.0.tgz#bf689045419a3c0c505f8dbe20af927a33438215"
+  integrity sha512-IWgpsKOIQ27WTNGvpm9qasTeuM/tFeYOtqfxmet3QdsrRiJjZfYxrmYDrZ0TPOVgF1cGKYoDxdl928woZHa8cg==
 
 figures@^1.3.5:
   version "1.7.0"
@@ -1143,6 +1143,11 @@ fluent-ffmpeg@^2.1.2:
   dependencies:
     async ">=0.2.9"
     which "^1.1.1"
+
+fn-args@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.npmjs.org/fn-args/-/fn-args-5.0.0.tgz#7a18e105c8fb3bf0a51c30389bf16c9ebe740bb3"
+  integrity sha512-CtbfI3oFFc3nbdIoHycrfbrxiGgxXBXXuyOl49h47JawM1mYrqpiRqnH5CB2mBatdXvHHOUO6a+RiAuuvKt0lw==
 
 fresh@0.5.2, fresh@^0.5.2:
   version "0.5.2"
@@ -1216,7 +1221,7 @@ glob-parent@^5.0.0:
   dependencies:
     is-glob "^4.0.1"
 
-glob@7.1.6, glob@^7.1.3, glob@^7.1.6:
+glob@^7.1.3, glob@^7.1.6:
   version "7.1.6"
   resolved "https://registry.npmjs.org/glob/-/glob-7.1.6.tgz#141f33b81a7c2492e125594307480c46679278a6"
   integrity sha512-LwaxwyZ72Lk7vZINtNNrywX0ZuLyStrdDtabefZKAY5ZGJhVtgdznluResxNmPitE0SAO+O26sWTHeKSI2wMBA==
@@ -1627,6 +1632,11 @@ kareem@2.3.1:
   resolved "https://registry.npmjs.org/kareem/-/kareem-2.3.1.tgz#def12d9c941017fabfb00f873af95e9c99e1be87"
   integrity sha512-l3hLhffs9zqoDe8zjmb/mAN4B8VT3L56EUvKNqLFVs9YlFA+zx7ke1DO8STAdDyYNkeSo1nKmjuvQeI12So8Xw==
 
+kleur@^3.0.3:
+  version "3.0.3"
+  resolved "https://registry.npmjs.org/kleur/-/kleur-3.0.3.tgz#a79c9ecc86ee1ce3fa6206d1216c501f147fc07e"
+  integrity sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==
+
 lcid@^3.0.0:
   version "3.1.1"
   resolved "https://registry.npmjs.org/lcid/-/lcid-3.1.1.tgz#9030ec479a058fc36b5e8243ebaac8b6ac582fd0"
@@ -1954,21 +1964,22 @@ moleculer-web@0.9.0-beta6:
     qs "^6.7.0"
     serve-static "^1.14.1"
 
-moleculer@^0.13.9:
-  version "0.13.12"
-  resolved "https://registry.npmjs.org/moleculer/-/moleculer-0.13.12.tgz#c9b6e6550e641259d435dfb796896674f56a1621"
-  integrity sha512-aOBQH+a7OAbzbCunTK7N1uj1aiUeDrHmk+ZDGQqhmS+SZx/MBkPidKDeBfY95m73L+po0HdEAoAsShpsXPPdLQ==
+moleculer@^0.14.0-rc1:
+  version "0.14.0-rc1"
+  resolved "https://registry.npmjs.org/moleculer/-/moleculer-0.14.0-rc1.tgz#2286453556226fa7a777711ea1e0651e827778c9"
+  integrity sha512-t/MkXvqVjw3/bBQo1roCdJRs2wCDD0Fs/GVM7gFTb0nNAwfHkEUdgBLOW/fKEm8vU4gtcj2x2F8kZAlYMA2WdQ==
   dependencies:
     args "^5.0.1"
-    bluebird "^3.5.5"
-    chalk "^2.4.2"
     es6-error "^4.1.1"
-    eventemitter2 "^5.0.1"
-    fastest-validator "0.6.19"
-    glob "7.1.6"
+    eventemitter2 "^6.0.0"
+    fastest-validator "^1.0.0"
+    fn-args "^5.0.0"
+    glob "^7.1.6"
     ipaddr.js "^1.9.1"
+    kleur "^3.0.3"
     lodash "^4.17.15"
     lru-cache "^5.1.1"
+    node-fetch "^2.6.0"
 
 moment-timezone@^0.5.25:
   version "0.5.27"
@@ -2167,6 +2178,11 @@ nice-try@^1.0.4:
   version "1.0.5"
   resolved "https://registry.npmjs.org/nice-try/-/nice-try-1.0.5.tgz#a3378a7696ce7d223e88fc9b764bd7ef1089e366"
   integrity sha512-1nh45deeb5olNY7eX82BkPO7SSxR5SSYJiPTrTdFUVYwAl8CKMA5N9PjTYkHiRjisVcxcQ1HXdLhx2qxxJzLNQ==
+
+node-fetch@^2.6.0:
+  version "2.6.0"
+  resolved "https://registry.npmjs.org/node-fetch/-/node-fetch-2.6.0.tgz#e633456386d4aa55863f676a7ab0daa8fdecb0fd"
+  integrity sha512-8dG4H5ujfvFiqDmVu9fQ5bOHUC15JMjMY/Zumv26oOvvVJjM67KF8koCWIabKQ1GJIa9r2mMZscBq/TbdOcmNA==
 
 node-int64@0.4.0, node-int64@^0.4.0:
   version "0.4.0"
@@ -2680,6 +2696,13 @@ redis@~2.8.0:
     double-ended-queue "^2.1.0-0"
     redis-commands "^1.2.0"
     redis-parser "^2.6.0"
+
+redlock@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.npmjs.org/redlock/-/redlock-4.1.0.tgz#2c8d6a348d1b8a10af61574fa3664eced003babc"
+  integrity sha512-6EdtGpk5aoZZJtclZGHAd77OJmBtMekD0t8fWUbBsm53pqHwLP+EqAEn3+a6lG+VZzClwjkLbePxpNaP1deGXw==
+  dependencies:
+    bluebird "^3.3.3"
 
 regenerator-runtime@^0.10.5:
   version "0.10.5"

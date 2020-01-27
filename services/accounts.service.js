@@ -3,7 +3,6 @@
 const Service = require("moleculer").Service;
 const Account = require("../models/user.model");
 const CoreMixins = require("../mixins");
-const settings = require("../settings/accounts.settings");
 const PassportJwt = require("passport-jwt");
 
 class AccountsService extends Service {
@@ -15,7 +14,14 @@ class AccountsService extends Service {
         CoreMixins.DB,
         CoreMixins.CacheCleaner(["cache.clean.accounts"])
       ],
-      settings,
+      settings: {
+        //$secureSettings: ["jwtSecret"], - жованый крот, на эту тему ишью есть
+        jwtSecret:
+          process.env.JWT_SECRET ||
+          "f^I8Zg}VIq)H,Tu9lxAOm|)=EjP6X))$}$j6#.:?Cn%*LotF>FUlSWJVC&x{yw",
+        jwtAlgorithm: process.env.JWT_ALGORYTHM || "HS256",
+        jwtExpiresIn: process.env.JWT_EXPIRES_IN || "7 days"
+      },
       actions: {
         /**
          * Register a new user

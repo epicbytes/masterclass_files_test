@@ -7,10 +7,10 @@ class ClientsPhoneService extends Service {
       dependencies: ["clients"],
       name: "clients_phone",
       setting: {
-        ku: "kukareku"
+        //
       },
       metadata: {
-        metadatas: "all you want"
+        plugin: true
       }
     });
   }

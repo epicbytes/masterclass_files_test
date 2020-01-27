@@ -17,6 +17,9 @@ class FilesService extends Service {
         before: {
           get: ["getFileInfo"],
           stream: ["getFileInfo"]
+        },
+        after: {
+          create: ["afterSaveFile"]
         }
       },
       actions: {
@@ -136,6 +139,7 @@ class FilesService extends Service {
     });
   }
 
+  //Action
   saveFile(ctx) {
     return new Promise((resolve, reject) => {
       const Attachment = createModel();
@@ -149,17 +153,23 @@ class FilesService extends Service {
         },
         ctx.params,
         (error, file) => {
-          if (error) {
-            reject(new Error(error));
-          }
-          ctx.emit("files.uploaded", {
-            filename: ctx.meta.filename,
-            id: file._id.toString()
-          });
-          resolve({ id: file._id });
+          !!error && reject(new Error(error));
+          resolve(file);
         }
       );
     });
+  }
+
+  //Hook
+  afterSaveFile(ctx, res) {
+    console.log(res);
+    const { filename } = res;
+    const id = res._id.toString();
+    ctx.emit("files.uploaded", {
+      filename,
+      id
+    });
+    return { id };
   }
 }
 

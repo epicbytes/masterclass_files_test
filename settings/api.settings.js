@@ -7,6 +7,29 @@ module.exports = {
   cors: true,
   routes: [
     {
+      path: "/api/v1/repl",
+      bodyParsers: {
+        json: {
+          limit: "5mb",
+          strict: true
+        },
+        urlencoded: {
+          extended: true,
+          limit: "5mb"
+        }
+      },
+      aliases: {
+        "GET /health": "repl.health",
+        "GET /nodes": "repl.nodes",
+        "GET /services": "repl.services",
+        "GET /actions": "repl.actions",
+        "GET /events": "repl.events",
+        "GET /v8": "repl.v8Stats",
+        "GET /cache": "repl.cache"
+      },
+      mappingPolicy: "restrict"
+    },
+    {
       path: "/api/v1/clients",
       use: [passport.initialize()],
       bodyParsers: {
@@ -20,7 +43,14 @@ module.exports = {
         }
       },
       aliases: {
-        "GET /plugins": [console.log, "clients.get_plugins"]
+        //TODO:  Реализовать мидлвар для аутентификации
+        "GET /plugins": [
+          function(req, res, next) {
+            //console.log(req);
+            next();
+          },
+          "clients.get_plugins"
+        ]
       },
       mappingPolicy: "restrict"
     },
@@ -49,6 +79,7 @@ module.exports = {
       },
       aliases: {
         "GET /stream/:id": "files.stream",
+        "GET /info/:id": "files.info",
         "GET /:id": "files.get",
         "POST /": "multipart:files.create",
         "PUT /": "stream:files.create",

@@ -40,7 +40,7 @@ module.exports = {
   // Define a serializer.
   // Available values: "JSON", "Avro", "ProtoBuf", "MsgPack", "Notepack", "Thrift".
   // More info: https://moleculer.services/docs/0.13/networking.html
-  serializer: "JSON",
+  //serializer: "JSON",
 
   // Number of milliseconds to wait before reject a request with a RequestTimeout error. Disabled: 0
   requestTimeout: 60 * 1000,
@@ -121,7 +121,33 @@ module.exports = {
   validator: null,
 
   // Enable metrics function. More info: https://moleculer.services/docs/0.13/metrics.html
-  metrics: true,
+  metrics: false,
+
+  tracing: {
+    enabled: true,
+    exporter: {
+      type: "Jaeger",
+      options: {
+        // HTTP Reporter endpoint. If set, HTTP Reporter will be used.
+        endpoint: null,
+        // UDP Sender host option.
+        host: "127.0.0.1",
+        // UDP Sender port option.
+        port: 6832,
+        // Jaeger Sampler configuration.
+        sampler: {
+          // Sampler type. More info: https://www.jaegertracing.io/docs/1.14/sampling/#client-sampling-configuration
+          type: "Const",
+          // Sampler specific options.
+          options: {}
+        },
+        // Additional options for `Jaeger.Tracer`
+        tracerOptions: {},
+        // Default tags. They will be added into all span tags.
+        defaultTags: null
+      }
+    }
+  },
   // Rate of metrics calls. 1 means to measure every request, 0 means to measure nothing.
   metricsRate: 1,
 
